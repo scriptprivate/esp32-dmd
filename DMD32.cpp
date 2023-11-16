@@ -35,7 +35,6 @@ Modified by: Khudhur Alfarhan  // Qudoren@gmail.com
 DMD::DMD(byte panelsWide, byte panelsHigh)
 {
 
-
     uint16_t ui;
     DisplaysWide=panelsWide;
     DisplaysHigh=panelsHigh;
@@ -44,21 +43,19 @@ DMD::DMD(byte panelsWide, byte panelsHigh)
     row2 = DisplaysTotal<<5;
     row3 = ((DisplaysTotal<<2)*3)<<2;
     bDMDScreenRAM = (byte *) malloc(DisplaysTotal*DMD_RAM_SIZE_BYTES);
-    
-    
-	
+
 	//initialise instance of the SPIClass attached to vspi
-	vspi = new SPIClass(VSPI);
+	vspi = new SPIClass(HSPI);
 
     // initialize the SPI port
-    vspi->begin();		// initiate VSPI with the default pinsinitiat VSPI with the defualt pins
+    //vspi->begin();		// initiate VSPI with the default pinsinitiat VSPI with the defualt pins
 
     digitalWrite(PIN_DMD_A, LOW);	// 
     digitalWrite(PIN_DMD_B, LOW);	// 
     digitalWrite(PIN_DMD_CLK, LOW);	// 
     digitalWrite(PIN_DMD_SCLK, LOW);	// 
     digitalWrite(PIN_DMD_R_DATA, HIGH);	// 
-    digitalWrite(PIN_DMD_nOE, LOW);	//
+    // digitalWrite(PIN_DMD_nOE, LOW);	//
 
     pinMode(PIN_DMD_A, OUTPUT);	//
     pinMode(PIN_DMD_B, OUTPUT);	//
@@ -66,9 +63,8 @@ DMD::DMD(byte panelsWide, byte panelsHigh)
     pinMode(PIN_DMD_SCLK, OUTPUT);	//
     pinMode(PIN_DMD_R_DATA, OUTPUT);	//
     pinMode(PIN_DMD_nOE, OUTPUT);	//
-    
-
-
+ 
+    vspi->begin(PIN_DMD_CLK, NULL, PIN_DMD_R_DATA, PIN_DMD_nOE);
 
     clearScreen(true);
 
